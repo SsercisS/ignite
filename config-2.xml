@@ -3,12 +3,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="         http://www.springframework.org/schema/beans              http://www.springframework.org/schema/beans/spring-beans.xsd              http://www.springframework.org/schema/util              http://www.springframework.org/schema/util/spring-util.xsd">
 
-<!--
-        Alter configuration below as needed.
-    -->
+    <!--
+            Alter configuration below as needed.
+        -->
     <!--DataSource Configuration-->
     <bean class="org.postgresql.ds.PGPoolingDataSource" id="postgreSQLDataSource">
-        <property name="URL" value="jdbc:postgresql://192.168.1.17:5432/postgres"/>
+        <property name="URL" value="jdbc:postgresql://192.168.1.19:5432/postgres"/>
         <property name="user" value="serciss"/>
         <property name="password" value="123"/>
     </bean>
@@ -20,9 +20,8 @@
                 <bean class="org.apache.ignite.configuration.CacheConfiguration">
                     <property name="name" value="clientTransactionCache"/>
                     <property name="cacheMode" value="REPLICATED"/>
-                    <property name="rebalanceMode" value="ASYNC"/>
+                    <property name="rebalanceMode" value="SYNC"/>
                     <property name="writeSynchronizationMode" value="FULL_SYNC"/>
-                    <property name="writeBehindEnabled" value="true"/>
                     <property name="cacheStoreFactory">
                         <bean class="org.apache.ignite.cache.store.jdbc.CacheJdbcPojoStoreFactory">
                             <property name="dataSourceBean" value="postgreSQLDataSource"/>
@@ -32,32 +31,25 @@
                             <property name="types">
                                 <list>
                                     <bean class="org.apache.ignite.cache.store.jdbc.JdbcType">
-                                        <property name="cacheName" value="clientTransactionCache"/>
-                                        <property name="KeyType" value="java.util.UUID"/>
+                                        <property name="cacheName" value="personCache"/>
+                                        <property name="KeyType" value="java.lang.Integer"/>
                                         <property name="valueType" value="org.apache.ignite.snippets.ClientTransaction"/>
                                         <property name="databaseSchema" value="public"/>
                                         <property name="databaseTable" value="client_transaction"/>
                                         <property name="KeyFields">
                                             <list>
-                                                <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
-                                                    <property name="databaseFieldType" >
-                                                        <util:constant static-field="java.sql.Types.OTHER"/>
-                                                    </property>
-                                                    <property name="databaseFieldName" value="id" />
-                                                    <property name="javaFieldType" value="java.util.UUID" />
-                                                    <property name="javaFieldName" value="id" />
-                                                </bean>
+
                                             </list>
                                         </property>
                                         <property name="valueFields">
                                             <list>
                                                 <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
-                                                    <property name="databaseFieldType" >
+                                                    <property name="databaseFieldType">
                                                         <util:constant static-field="java.sql.Types.OTHER"/>
                                                     </property>
-                                                    <property name="databaseFieldName" value="id" />
-                                                    <property name="javaFieldType" value="java.util.UUID" />
-                                                    <property name="javaFieldName" value="id" />
+                                                    <property name="databaseFieldName" value="id"/>
+                                                    <property name="javaFieldType" value="java.util.UUID"/>
+                                                    <property name="javaFieldName" value="id"/>
                                                 </bean>
                                                 <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
                                                     <property name="databaseFieldType">
@@ -237,26 +229,26 @@
                                                 </bean>
                                                 <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
                                                     <property name="databaseFieldType">
-                                                        <util:constant static-field="java.sql.Types.DOUBLE"/>
+                                                        <util:constant static-field="java.sql.Types.VARCHAR"/>
                                                     </property>
                                                     <property name="databaseFieldName" value="request_amount"/>
-                                                    <property name="javaFieldType" value="java.lang.Double"/>
+                                                    <property name="javaFieldType" value="java.lang.String"/>
                                                     <property name="javaFieldName" value="request_amount"/>
                                                 </bean>
                                                 <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
                                                     <property name="databaseFieldType">
-                                                        <util:constant static-field="java.sql.Types.DOUBLE"/>
+                                                        <util:constant static-field="java.sql.Types.VARCHAR"/>
                                                     </property>
                                                     <property name="databaseFieldName" value="commission_iss_amount"/>
-                                                    <property name="javaFieldType" value="java.lang.Double"/>
+                                                    <property name="javaFieldType" value="java.lang.String"/>
                                                     <property name="javaFieldName" value="commission_iss_amount"/>
                                                 </bean>
                                                 <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
                                                     <property name="databaseFieldType">
-                                                        <util:constant static-field="java.sql.Types.DOUBLE"/>
+                                                        <util:constant static-field="java.sql.Types.VARCHAR"/>
                                                     </property>
                                                     <property name="databaseFieldName" value="replace_amount"/>
-                                                    <property name="javaFieldType" value="java.lang.Double"/>
+                                                    <property name="javaFieldType" value="java.lang.String"/>
                                                     <property name="javaFieldName" value="replace_amount"/>
                                                 </bean>
                                                 <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
